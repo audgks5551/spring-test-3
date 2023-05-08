@@ -3,7 +3,6 @@ package io.mhan.springjpatest.posts.repository;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.mhan.springjpatest.posts.entity.Post;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static io.mhan.springjpatest.posts.entity.QPost.post;
@@ -25,16 +23,19 @@ public class QueryDslPostRepositoryImp implements QueryDslPostRepository {
     @Override
     public List<Post> findAll(Sort sort) {
 
+        // query 만들기
         JPAQuery<Post> contentQuery = jpaQueryFactory
                 .select(post)
                 .from(post)
                 .orderBy(getOrderSpecifiers(sort));
 
+        // query 실행
         List<Post> posts = contentQuery.fetch();
 
         return posts;
     }
 
+    // OrderSpecifier 모음
     private OrderSpecifier<?>[] getOrderSpecifiers(Sort sort) {
 
         OrderSpecifier[] orderSpecifiers = sort.stream()
@@ -43,6 +44,7 @@ public class QueryDslPostRepositoryImp implements QueryDslPostRepository {
         return orderSpecifiers;
     }
 
+    // Sort의 order -> QueryDsl의 OrderSpecifier
     private OrderSpecifier<?> createOrderSpecifier(Sort.Order o) {
         Order order = o.getDirection().isAscending() ? Order.ASC : Order.DESC;
 

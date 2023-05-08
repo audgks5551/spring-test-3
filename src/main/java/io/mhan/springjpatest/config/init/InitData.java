@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class InitData {
 
     @Bean
-    @Profile("default")
+    @Profile("default") // default 모드에서만 실행
     public ApplicationRunner defaultInit(PostRepository postRepository) {
         return args -> {
 

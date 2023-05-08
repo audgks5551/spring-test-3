@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Locale;
 
-// P6SpySqlFormatter
+// jpa 쿼리 이쁘게
 @Configuration
 public class P6SpySqlFormatter implements MessageFormattingStrategy {
 

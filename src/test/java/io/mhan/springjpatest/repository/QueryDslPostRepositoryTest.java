@@ -3,7 +3,6 @@ package io.mhan.springjpatest.repository;
 import io.mhan.springjpatest.posts.entity.Post;
 import io.mhan.springjpatest.posts.repository.PostRepository;
 import io.mhan.springjpatest.posts.repository.QueryDslPostRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,6 +28,7 @@ public class QueryDslPostRepositoryTest {
 
     @BeforeAll
     void beforeAll() {
+        // 초기 데이터 생성
         Random random = new Random();
         for (int i=1; i<=15; i++) {
             Post post = Post.builder()
@@ -44,13 +44,16 @@ public class QueryDslPostRepositoryTest {
 
     @AfterAll
     void afterAll() {
+        // 초기 데이터 생성 모두 삭제
         postRepository.deleteAll();
     }
 
     @Test
     @DisplayName("모든 post 조회")
     void t1() {
-        List<Post> posts = queryDslPostRepository.findAll(Sort.unsorted());
+        Sort sort = Sort.unsorted(); // 아무 정렬 조건을 주지 않는다
+
+        List<Post> posts = queryDslPostRepository.findAll(sort);
 
         assertThat(posts.size()).isEqualTo(15);
     }
@@ -58,7 +61,7 @@ public class QueryDslPostRepositoryTest {
     @Test
     @DisplayName("오래된 순 조회")
     void t2() {
-        Sort.Order order = Sort.Order.asc("id");
+        Sort.Order order = Sort.Order.asc("id"); // id를 기준으로 asc 정렬
 
         Sort sort = Sort.by(order);
 
@@ -70,7 +73,7 @@ public class QueryDslPostRepositoryTest {
     @Test
     @DisplayName("최신순 조회")
     void t3() {
-        Sort.Order order = Sort.Order.desc("createdAt");
+        Sort.Order order = Sort.Order.desc("createdAt"); // createdAt을 기준으로 desc 정렬
 
         Sort sort = Sort.by(order);
 
@@ -91,12 +94,12 @@ public class QueryDslPostRepositoryTest {
     @Test
     @DisplayName("가장 조회수가 많은순으로 정렬")
     void t5() {
-        Sort.Order order = Sort.Order.desc("views");
+        Sort.Order order = Sort.Order.desc("views"); // views를 기준으로 desc 정렬
 
         Sort sort = Sort.by(order);
-        List<Post> posts = queryDslPostRepository.findAll(sort);
+        List<Post> posts = queryDslPostRepository.findAll(sort); // post1, post2, post3
 
-        Collections.reverse(posts);
+        Collections.reverse(posts); // post3, post2, post1
 
         assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getViews));
     }
