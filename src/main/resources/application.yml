@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3307/post_dev
+    username: testuser
+    password: 5678
+  jpa:
+    hibernate:
+      ddl-auto: create
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
