@@ -3,6 +3,7 @@ package io.mhan.springjpatest.posts.repository;
 import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.mhan.springjpatest.posts.entity.Post;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.querydsl.core.types.dsl.Expressions.allOf;
+import static com.querydsl.core.types.dsl.Expressions.anyOf;
 import static io.mhan.springjpatest.posts.entity.QPost.post;
 
 @Repository
@@ -27,12 +30,22 @@ public class QueryDslPostRepositoryImp implements QueryDslPostRepository {
         JPAQuery<Post> contentQuery = jpaQueryFactory
                 .select(post)
                 .from(post)
+                .where(getEq(1L))
                 .orderBy(getOrderSpecifiers(sort));
 
         // query 실행
         List<Post> posts = contentQuery.fetch();
 
         return posts;
+    }
+
+    private static BooleanExpression getEq(Long id) {
+
+        if (id != null && (id.equals("M") || id.equals("W"))) {
+            return post.id.eq(id);
+        }
+
+        return null;
     }
 
     // OrderSpecifier 모음
