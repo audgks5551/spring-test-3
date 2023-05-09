@@ -21,7 +21,6 @@ public class InitData {
                 Post post = Post.builder()
                         .title("title" + i)
                         .content("content" + (i + 1))
-                        .content("content" + (i + 2))
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
                         .build();
