@@ -20,7 +20,6 @@ public class InitData {
             for (int i=1; i<=15; i++) {
                 Post post = Post.builder()
                         .title("title" + i)
-                        .content("content" + (i + 1))
                         .content("content" + (i + 2))
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
